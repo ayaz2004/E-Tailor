@@ -1,9 +1,9 @@
 import { Navbar, TextInput, Button } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { FaMoon } from "react-icons/fa";
+import { FaMoon, FaSun } from "react-icons/fa";
 
-export default function Header() {
+export default function Header({ toggleDarkMode, darkMode }) {
   const path = useLocation().pathname;
   return (
     <Navbar className="border-b-2">
@@ -27,8 +27,8 @@ export default function Header() {
         <AiOutlineSearch />
       </Button>
       <div className="flex gap-2 md:order-2">
-        <Button className="w-12 h-10 hidden sm:inline" color="gray " pill>
-          <FaMoon />
+        <Button className="w-12 h-10 hidden sm:inline" color="gray " pill onClick={toggleDarkMode}>
+        {darkMode ? <FaSun /> : <FaMoon />}
         </Button>
         <Link to="/sign-in">
           <Button gradientDuoTone="redToYellow">Sign In</Button>
