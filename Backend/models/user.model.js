@@ -16,6 +16,15 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["user", "tailor"],
+      required: true,
+    },
+    assignedTailor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User", // Assuming tailors are also stored in the User collection
+    },
   },
   { timestamps: true }
 );

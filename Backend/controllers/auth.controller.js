@@ -1,27 +1,35 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
-export const signup = async (req, res) => {
-  const { username, email, password } = req.body;
+import { errorHandler } from "../utils/error.js";
+import ApiResponse from "../utils/apiResponse.js";
+
+export const signup = async (req, res, next) => {
+  const { username, email, password, role } = req.body;
   if (
     !username ||
     !email ||
     !password ||
+    !role ||
     username === "" ||
     email === "" ||
-    password === ""
+    password === "" ||
+    role === ""
   ) {
-    return res.status(400).json({ message: "All fields are required" });
+    return next(errorHandler(400, "All fields are required"));
   }
   const hashedPassword = bcryptjs.hashSync(password, 10);
   const newUser = new User({
     username,
     email,
     password: hashedPassword,
+    role,
   });
   try {
     await newUser.save();
-    res.json("Signup successful");
+    res
+      .status(201)
+      .json(new ApiResponse(200, "Signup successfully", newUser.username));
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    next(errro);
   }
 };
